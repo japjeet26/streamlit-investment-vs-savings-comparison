@@ -141,13 +141,13 @@ else:
 
 # Increase font sizes and adjust the plot for better readability
 plt.rcParams.update({
-    'font.size': 14,
-    'axes.titlesize': 20,
-    'axes.labelsize': 16,
-    'xtick.labelsize': 14,
-    'ytick.labelsize': 14,
-    'legend.fontsize': 18,
-    'figure.titlesize': 22
+    'font.size': 18,
+    'axes.titlesize': 24,
+    'axes.labelsize': 20,
+    'xtick.labelsize': 18,
+    'ytick.labelsize': 18,
+    'legend.fontsize': 20,
+    'figure.titlesize': 28
 })
 
 # Plotting the results
@@ -159,7 +159,7 @@ ax.plot(dates, selected_investment, label=selected_asset)
 ax.set_xlabel("Date")
 ax.set_ylabel("Portfolio Value (CAD)")
 ax.set_title("Investment Growth Comparison")
-ax.legend(prop={'size': 18})  # Adjust the legend size here
+ax.legend(prop={'size': 20})  # Adjust the legend size here
 ax.grid(True)
 
 st.pyplot(fig)
