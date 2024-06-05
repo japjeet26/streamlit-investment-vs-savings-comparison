@@ -73,18 +73,28 @@ nifty_etf_cad = nifty_etf / cad_usd
 # Monthly investment
 monthly_investment = 1000
 months = len(dates)
+days_in_month = 30  # Assume each month has 30 days for simplicity
+total_days = months * days_in_month
 
 # Checking account (no interest)
 checking_account = np.cumsum(np.ones(months) * monthly_investment)
 
-# Savings account with user-defined annual interest rate compounded monthly
-savings_account = np.zeros(months)
-monthly_interest_rate = (1 + interest_rate / 100)**(1/12) - 1
-for i in range(months):
-    if i == 0:
-        savings_account[i] = monthly_investment
+# Savings account with user-defined annual interest rate compounded daily
+savings_account = np.zeros(total_days)
+daily_interest_rate = (1 + interest_rate / 100) ** (1 / 365) - 1
+
+# Calculate the savings account balance for each day
+for day in range(total_days):
+    if day == 0:
+        savings_account[day] = monthly_investment
     else:
-        savings_account[i] = savings_account[i-1] * (1 + monthly_interest_rate) + monthly_investment
+        savings_account[day] = savings_account[day - 1] * (1 + daily_interest_rate)
+        # Add the monthly investment at the beginning of each month
+        if day % days_in_month == 0:
+            savings_account[day] += monthly_investment
+
+# Reshape savings_account to monthly values for plotting
+savings_account_monthly = savings_account[::days_in_month]
 
 # Initialize arrays to hold the number of units and portfolio values
 s_p500_units = np.zeros(months)
@@ -146,20 +156,20 @@ plt.rcParams.update({
     'axes.labelsize': 20,
     'xtick.labelsize': 18,
     'ytick.labelsize': 18,
-    'legend.fontsize': 20,
+    'legend.fontsize': 20,  # Adjust this size if needed
     'figure.titlesize': 28
 })
 
 # Plotting the results
 fig, ax = plt.subplots(figsize=(20, 12))
 
-ax.plot(dates, savings_account, label=f"Savings Account ({interest_rate:.2f}% Annual Interest)")
+ax.plot(dates, savings_account_monthly, label=f"Savings Account ({interest_rate:.2f}% Annual Interest)")
 ax.plot(dates, selected_investment, label=selected_asset)
 
 ax.set_xlabel("Date")
 ax.set_ylabel("Portfolio Value (CAD)")
 ax.set_title("Investment Growth Comparison")
-ax.legend(prop={'size': 20})  # Adjust the legend size here
+legend = ax.legend(prop={'size': 24})  # Explicitly set the legend font size here
 ax.grid(True)
 
 st.pyplot(fig)
