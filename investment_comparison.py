@@ -45,7 +45,7 @@ with col2:
     initial_investment = st.number_input('Monthly investment ($)', min_value=0, value=1000, step=100)
 
 # Asset selection
-asset_options = ['S&P 500 Index (VOO)', 'Emerging Market Index (VWO)', '60:40 Split (S&P 500:US T-Bonds)', 'TSX Index Fund (XIU)', 'Nifty Index Fund (INDY)']
+asset_options = ['S&P 500 Index (VOO)', 'Emerging Market Index (VWO)', '60:40 Split (S&P 500:US T-Bonds)', 'TSX Index Fund (XIU)', 'iShares India 50 ETF (INDY)']
 selected_asset = st.selectbox('Select the asset to compare against the savings account', asset_options)
 
 # Date range slicer
