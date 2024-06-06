@@ -33,8 +33,16 @@ nifty_etf.index = nifty_etf.index.to_pydatetime()
 # Streamlit app
 st.title('Investment Growth Comparison')
 
-# Input for savings account interest rate
-interest_rate = st.number_input('Enter the annual interest rate for the savings account (%)', min_value=0.0, value=2.0, step=0.1)
+# Create two columns for inputs
+col1, col2 = st.columns(2)
+
+with col1:
+    # Input for savings account interest rate
+    interest_rate = st.number_input('Annual interest rate (%)', min_value=0.0, value=2.0, step=0.1)
+
+with col2:
+    # Input for initial investment amount
+    initial_investment = st.number_input('Monthly investment ($)', min_value=0, value=1000, step=100)
 
 # Asset selection
 asset_options = ['S&P 500 Index (VOO)', 'Emerging Market Index (VWO)', '60:40 Split (S&P 500:US T-Bonds)', 'TSX Index Fund (XIU)', 'Nifty Index Fund (INDY)']
@@ -72,7 +80,7 @@ tsx_etf_cad = tsx_etf / cad_usd
 nifty_etf_cad = nifty_etf / cad_usd
 
 # Monthly investment
-monthly_investment = 1000
+monthly_investment = initial_investment
 months = len(dates)
 days_in_month = 30  # Assume each month has 30 days for simplicity
 total_days = months * days_in_month
