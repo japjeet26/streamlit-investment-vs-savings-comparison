@@ -4,6 +4,7 @@ import yfinance as yf
 import matplotlib.pyplot as plt
 import streamlit as st
 from datetime import datetime
+from matplotlib.ticker import FuncFormatter
 
 # Define function to fetch and process data
 @st.cache_data
@@ -156,20 +157,40 @@ plt.rcParams.update({
     'axes.labelsize': 20,
     'xtick.labelsize': 18,
     'ytick.labelsize': 18,
-    'legend.fontsize': 20,  # Adjust this size if needed
+    'legend.fontsize': 20,
     'figure.titlesize': 28
 })
 
+# Function to format y-axis as currency
+def currency(x, pos):
+    return f'${x:,.0f}'
+
 # Plotting the results
-fig, ax = plt.subplots(figsize=(24, 14))
+fig, ax = plt.subplots(figsize=(20, 12))
 
 ax.plot(dates, savings_account_monthly, label=f"Savings Account ({interest_rate:.2f}% Annual Interest)")
 ax.plot(dates, selected_investment, label=selected_asset)
 
+# Format y-axis as currency
+ax.yaxis.set_major_formatter(FuncFormatter(currency))
+
+# Add vertical line segment to highlight the difference
+savings_end_value = savings_account_monthly[-1]
+investment_end_value = selected_investment[-1]
+ax.plot([end_date, end_date], [savings_end_value, investment_end_value], color='gray', linestyle='--', linewidth=2)
+
+# Calculate the difference between savings and investment at the end date
+difference = investment_end_value - savings_end_value
+difference_text = f'Difference: ${difference:,.0f}'
+
+# Add text annotation (KPI card)
+ax.text(end_date, max(investment_end_value, savings_end_value), difference_text,
+        horizontalalignment='left', verticalalignment='bottom', fontsize=18, bbox=dict(facecolor='white', alpha=0.8))
+
 ax.set_xlabel("Date")
 ax.set_ylabel("Portfolio Value (CAD)")
 ax.set_title("Investment Growth Comparison")
-legend = ax.legend(prop={'size': 24})  # Explicitly set the legend font size here
+legend = ax.legend(prop={'size': 20})  # Explicitly set the legend font size here
 ax.grid(True)
 
 st.pyplot(fig)
