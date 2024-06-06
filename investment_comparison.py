@@ -161,7 +161,7 @@ plt.rcParams.update({
 })
 
 # Plotting the results
-fig, ax = plt.subplots(figsize=(20, 12))
+fig, ax = plt.subplots(figsize=(24, 14))
 
 ax.plot(dates, savings_account_monthly, label=f"Savings Account ({interest_rate:.2f}% Annual Interest)")
 ax.plot(dates, selected_investment, label=selected_asset)
